@@ -1,0 +1,426 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguimiento Emocional con IA</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            color: #444;
+            line-height: 1.7;
+        }
+
+        header {
+            background-color: #37474f;
+            color: #eceff1;
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            header h1 {
+                font-size: 2.8em;
+                margin-bottom: 8px;
+                font-weight: 300;
+            }
+
+            header p {
+                font-size: 1.2em;
+                color: #cfd8dc;
+            }
+
+        .content {
+            padding: 50px;
+            max-width: 750px;
+            margin: 40px auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        h2 {
+            color: #546e7a;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        select, textarea, input[type="number"] {
+            width: calc(100% - 24px);
+            padding: 14px;
+            margin-top: 8px;
+            font-size: 16px;
+            border: 1px solid #bdbdbd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-weight: 300;
+        }
+
+            select:focus, textarea:focus, input[type="number"]:focus {
+                outline: none;
+                border-color: #546e7a;
+                box-shadow: 0 0 6px rgba(84, 110, 122, 0.4);
+            }
+
+        button {
+            background-color: #546e7a;
+            color: white;
+            padding: 16px 30px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            font-weight: 400;
+        }
+
+            button:hover {
+                background-color: #455a64;
+            }
+
+        #result {
+            margin-top: 50px;
+            padding: 30px;
+            background-color: #f0f4f7;
+            border-left: 8px solid #546e7a;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+            #result h3 {
+                margin-top: 0;
+                color: #37474f;
+                margin-bottom: 20px;
+                font-weight: 400;
+            }
+
+            #result p {
+                font-size: 1.15em;
+                line-height: 1.8;
+                color: #555;
+                font-weight: 300;
+            }
+
+        #history {
+            margin-top: 50px;
+            padding: 30px;
+            background-color: #eceff1;
+            border-left: 8px solid #78909c;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+            #history h3 {
+                margin-top: 0;
+                color: #546e7a;
+                margin-bottom: 20px;
+                font-weight: 400;
+            }
+
+            #history ul {
+                padding-left: 30px;
+                list-style-type: disc;
+            }
+
+            #history li {
+                margin-bottom: 12px;
+                color: #666;
+                font-size: 1.05em;
+                font-weight: 300;
+            }
+
+                #history li strong {
+                    font-weight: 600;
+                    color: #444;
+                }
+
+            #history em {
+                font-style: italic;
+                color: #777;
+            }
+
+        .button-history {
+            background-color: #78909c;
+            color: white;
+            padding: 14px 22px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+            display: block;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+        }
+
+            .button-history:hover {
+                background-color: #607d8b;
+            }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Seguimiento Emocional con IA</h1>
+        <p>Responde a las siguientes preguntas para evaluar tu estado emocional y obtener un consejo.</p>
+    </header>
+
+    <div class="content">
+        <h2>Preguntas</h2>
+        <form id="emotionForm">
+            <div class="form-group">
+                <label for="q2">¿Te has sentido más estresado o ansioso de lo habitual?</label>
+                <select id="q2" name="q2" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="q3">¿Estás satisfecho con tus relaciones sociales?</label>
+                <select id="q3" name="q3" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="q4">¿Tienes dificultades para dormir?</label>
+                <select id="q4" name="q4" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="q5">¿Te has sentido más cansado últimamente?</label>
+                <select id="q5" name="q5" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="q6">¿Te sientes motivado en tus tareas diarias?</label>
+                <select id="q6" name="q6" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="q7">¿Te has sentido triste más de lo normal?</label>
+                <select id="q7" name="q7" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="q8">¿Sientes descontrol sobre tus preocupaciones?</label>
+                <select id="q8" name="q8" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="q9">¿Has tenido cambios en tus hábitos alimenticios?</label>
+                <select id="q9" name="q9" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="q10">¿Te sientes en paz contigo mismo?</label>
+                <select id="q10" name="q10" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="q1_hidden" style="display:none;">¿Cómo te sientes hoy en una escala del 1 al 10?</label>
+                <input type="number" id="q1_hidden" name="q1_hidden" min="1" max="10" style="display:none;">
+            </div>
+
+            <button type="submit">Guardar y obtener consejo</button>
+        </form>
+
+        <div id="result" style="display:none;"></div>
+
+        <button onclick="showAllEntries()" style="margin-top: 20px;">Ver historial de estados de ánimo</button>
+        <div id="history"></div>
+    </div>
+
+    <script>
+        async function getGeminiAdvice(prompt) {
+            const apiKey = 'AIzaSyCa7nMnVCM5H0PkNpb6FD7oFLIKkLqpXoU'; // **¡REEMPLAZA ESTO CON TU CLAVE REAL!**
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: prompt }]
+                    }]
+                })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                console.error('Error al obtener consejo de Gemini:', error);
+                return 'No se pudo obtener un consejo en este momento.';
+            }
+
+            const data = await response.json();
+            return data.candidates[0].content.parts[0].text.trim();
+        }
+
+        document.getElementById('emotionForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            // Obtener la respuesta a la primera pregunta (escala del 1 al 10)
+            const q1Value = parseInt(document.getElementById("q1_hidden").value) || 5; // Valor por defecto si no se selecciona
+
+            // Inicializar el contador del estado de ánimo
+            let moodScore = 0;
+
+            // Iterar a través de las preguntas 2 a 10 y sumar/restar al puntaje
+            for (let i = 2; i <= 10; i++) {
+                const value = parseInt(document.getElementById(`q${i}`).value);
+                moodScore += (value === 1 ? -1 : 1); // Si la respuesta es Sí (1), resta; si es No (0), suma.
+            }
+
+            let moodDescription = '';
+            let moodType = ''; // Variable para almacenar el tipo de ánimo
+            // Evaluar el estado de ánimo basado en el puntaje de las preguntas 2-10
+            if (moodScore <= -3) {
+                moodDescription = 'Te siento un poco bajo o preocupado.';
+                moodType = 'Negativo';
+            } else if (moodScore >= 3) {
+                moodDescription = 'Te siento generalmente bien y positivo.';
+                moodType = 'Positivo';
+            } else {
+                moodDescription = 'Estas experimentando emociones normales.';
+                moodType = 'Normal';
+            }
+
+            const prompt = `Basado en mi estado emocional general: "${moodDescription}", y considerando que en una escala del 1 al 10 mi nivel de bienestar general es ${q1Value}, dame un consejo breve y alentador.`;
+            const geminiAdvice = await getGeminiAdvice(prompt);
+
+            let xmlDoc = document.implementation.createDocument("", "", null);
+            let rootElement = xmlDoc.createElement("EmotionalSurvey");
+            let record = xmlDoc.createElement("Record");
+            let dateElement = xmlDoc.createElement("Date");
+            dateElement.textContent = new Date().toLocaleString();
+            record.appendChild(dateElement);
+
+            // Guardar todas las respuestas en el XML
+            for (let i = 2; i <= 10; i++) { // Comenzar desde la pregunta 2
+                let value = document.getElementById(`q${i}`).value;
+                let qEl = xmlDoc.createElement("Question");
+                qEl.setAttribute("id", `q${i}`);
+                qEl.textContent = value;
+                record.appendChild(qEl);
+            }
+            // Guardar la respuesta a la pregunta 1 (oculta)
+            let q1ValueToSave = document.getElementById("q1_hidden").value;
+            let q1El = xmlDoc.createElement("Question");
+            q1El.setAttribute("id", `q1`);
+            q1El.textContent = q1ValueToSave;
+            record.appendChild(q1El);
+
+
+            let commentElement = xmlDoc.createElement("Comment");
+            commentElement.textContent = geminiAdvice;
+            record.appendChild(commentElement);
+
+            let moodElement = xmlDoc.createElement("Mood");
+            moodElement.textContent = moodDescription;
+            record.appendChild(moodElement);
+
+            let moodTypeElement = xmlDoc.createElement("MoodType"); // Nuevo elemento para el tipo de ánimo
+            moodTypeElement.textContent = moodType;
+            record.appendChild(moodTypeElement);
+
+            rootElement.appendChild(record);
+            xmlDoc.appendChild(rootElement);
+
+            let serializer = new XMLSerializer();
+            let xmlString = serializer.serializeToString(xmlDoc);
+
+            let existingData = localStorage.getItem('emotionalSurvey');
+            let allSurveys = existingData ? existingData + "\n" + xmlString : xmlString;
+            localStorage.setItem('emotionalSurvey', allSurveys);
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<h3>Estado de ánimo: ${moodType}</h3><p>Consejo de la IA</p><p>${geminiAdvice}</p>`;
+            resultDiv.style.display = 'block';
+
+            document.getElementById('emotionForm').reset();
+        });
+
+        function showAllEntries() {
+            const historyDiv = document.getElementById('history');
+            historyDiv.innerHTML = '';
+
+            let raw = localStorage.getItem('emotionalSurvey');
+            if (!raw) {
+                historyDiv.innerHTML = '<p>No hay entradas guardadas todavía.</p>';
+                return;
+            }
+
+            let parser = new DOMParser();
+            let entries = raw.split('\n');
+            let listHTML = '<h3>Historial de respuestas</h3><ul>';
+
+            for (let xmlStr of entries) {
+                let doc = parser.parseFromString(xmlStr, "application/xml");
+                let date = doc.querySelector("Date")?.textContent || 'Fecha desconocida';
+                let moodType = doc.querySelector("MoodType")?.textContent || 'Tipo de ánimo no definido';
+                let comment = doc.querySelector("Comment")?.textContent || '';
+                listHTML += `<li><strong>${date}:</strong> Estado: ${moodType}${comment ? `<br><em>Consejo:</em> ${comment}` : ''}</li>`;
+            }
+
+            listHTML += '</ul>';
+            historyDiv.innerHTML = listHTML;
+        }
+    </script>
+
+</body>
+</html>
